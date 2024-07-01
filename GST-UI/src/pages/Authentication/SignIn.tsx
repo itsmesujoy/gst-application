@@ -1,9 +1,17 @@
+import axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 
 const SignIn: React.FC = () => {
+ 
+  const checkFetch=async()=>{
+    let data = await axios.get("https://gst-portal.cfapps.ap21.hana.ondemand.com/users")
+    console.log(data.data.msg);
+    localStorage.setItem("token",data.data.msg)
+    window.location.reload()
+    }
   return (
     <>
     
@@ -154,7 +162,7 @@ const SignIn: React.FC = () => {
                 Sign In to GST Req
               </h2>
 
-              <form>
+             
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -223,6 +231,7 @@ const SignIn: React.FC = () => {
 
                 <div className="mb-5">
                   <input
+                  onClick={checkFetch}
                     type="submit"
                     value="Sign In"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
@@ -239,7 +248,7 @@ const SignIn: React.FC = () => {
                     </Link>
                   </p>
                 </div>
-              </form>
+           
             </div>
           </div>
         </div>

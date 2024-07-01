@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
+import DefaultLayout from './layout/DefaultLayout';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
@@ -15,20 +16,23 @@ import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
-import DefaultLayout from './layout/DefaultLayout';
 
 function App() {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>();
   const { pathname } = useLocation();
-  const [token, setToken] = useState(false)
+  const [token, setToken] = useState<boolean>(true)
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   useEffect(() => {
+   
     setTimeout(() => setLoading(false), 1000);
-    setToken(false)
+   let data=localStorage.getItem("token")
+   if(data){
+    setToken(false)}
+   
   }, []);
 
   return loading ? (
