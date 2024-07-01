@@ -1,0 +1,9 @@
+applications:
+  - name: GST-PORTAL
+    memory: 256M
+    buildpacks:
+      - nodejs_buildpack
+    command: npm start
+    path: .
+    env:
+      NODE_ENV: production
