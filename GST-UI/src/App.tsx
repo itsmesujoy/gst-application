@@ -20,6 +20,7 @@ import DefaultLayout from './layout/DefaultLayout';
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
+  const [token, setToken] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -27,11 +28,34 @@ function App() {
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
+    setToken(false)
   }, []);
 
   return loading ? (
     <Loader />
-  ) : (
+  ) : (token?
+   
+    <Routes>
+        <Route
+         path="/"
+          element={
+            <>
+             
+              <SignIn />
+            </>
+          }
+        />
+        <Route
+         path="/signup"
+          element={
+            <>
+             
+              <SignUp />
+            </>
+          }
+        />
+        </Routes>
+    :<>
     <DefaultLayout>
       <Routes>
         <Route
@@ -144,6 +168,7 @@ function App() {
         />
       </Routes>
     </DefaultLayout>
+    </>
   );
 }
 
