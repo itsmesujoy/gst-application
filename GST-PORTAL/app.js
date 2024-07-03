@@ -8,7 +8,13 @@ var cors = require('cors');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+
+const dbMiddleware = require('./db/dbMiddleware');
+
+
+
 var app = express();
+app.use(dbMiddleware);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
