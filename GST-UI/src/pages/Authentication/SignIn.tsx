@@ -1,31 +1,34 @@
-import axios from 'axios';
-import React from 'react';
+
+import React, { useState } from 'react';
+
 import { Link } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
+import { LoginService } from '../../services/loginservice';
 
 const SignIn: React.FC = () => {
- 
-  const checkFetch=async()=>{
-    let data = await axios.get("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users")
-    console.log(data.data.msg);
-    localStorage.setItem("token",data.data.msg)
+  const [LoginData, setLoginData] = useState<any>({})
+
+  const handleLogin = async () => {
+    let data = await LoginService(LoginData)
+
+    localStorage.setItem("token", data.token)
     window.location.reload()
-    }
+  }
   return (
     <>
-    
 
-      <div className="rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark" style={{backgroundColor:"#fbfbfb"}}>
+
+      <div className="rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark" style={{ backgroundColor: "#fbfbfb" }}>
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
               <Link className="mb-5.5 inline-block" to="/">
-                <img className="hidden dark:block" style={{width:"10%"}} src={Logo} alt="Logo" />
+                <img className="hidden dark:block" style={{ width: "10%" }} src={Logo} alt="Logo" />
                 <img className="dark:hidden" src={LogoDark} alt="Logo" />
               </Link>
 
-   
+
 
               <span className="mt-15 inline-block">
                 {/* <svg
@@ -159,20 +162,23 @@ const SignIn: React.FC = () => {
                 Sign In to GST Req
               </h2>
 
-             
-                <div className="mb-4">
-                  <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Email
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      placeholder="Enter your email"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
 
-                    <span className="absolute right-4 top-4">
-                      {/* <svg
+              <div className="mb-4">
+                <label className="mb-2.5 block font-medium text-black dark:text-white">
+                  Email
+                </label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    onChange={(e) => {
+                      setLoginData({ ...LoginData, email: e.target.value })
+                    }}
+                    placeholder="Enter your email"
+                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+
+                  <span className="absolute right-4 top-4">
+                    {/* <svg
                         className="fill-current"
                         width="22"
                         height="22"
@@ -187,23 +193,24 @@ const SignIn: React.FC = () => {
                           />
                         </g>
                       </svg> */}
-                    </span>
-                  </div>
+                  </span>
                 </div>
+              </div>
 
-                <div className="mb-6">
-                  <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="password"
-                      placeholder="6+ Characters, 1 Capital letter"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
+              <div className="mb-6">
+                <label className="mb-2.5 block font-medium text-black dark:text-white">
+                  Re-type Password
+                </label>
+                <div className="relative">
+                  <input
+                    onChange={(e) => { setLoginData({ ...LoginData, password: e.target.value }) }}
+                    type="password"
+                    placeholder="6+ Characters, 1 Capital letter"
+                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
 
-                    <span className="absolute right-4 top-4">
-                      {/* <svg
+                  <span className="absolute right-4 top-4">
+                    {/* <svg
                         className="fill-current"
                         width="22"
                         height="22"
@@ -222,30 +229,30 @@ const SignIn: React.FC = () => {
                           />
                         </g>
                       </svg> */}
-                    </span>
-                  </div>
+                  </span>
                 </div>
+              </div>
 
-                <div className="mb-5">
-                  <input
-                  onClick={checkFetch}
-                    type="submit"
-                    value="Sign In"
-                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
-                  />
-                </div>
+              <div className="mb-5">
+                <input
+                  onClick={handleLogin}
+                  type="submit"
+                  value="Sign In"
+                  className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                />
+              </div>
 
-             
 
-                <div className="mt-6 text-center">
-                  <p>
-                    Don’t have any account?{' '}
-                    <Link to="/signup" className="text-primary">
-                      Sign Up
-                    </Link>
-                  </p>
-                </div>
-           
+
+              <div className="mt-6 text-center">
+                <p>
+                  Don’t have any account?{' '}
+                  <Link to="/signup" className="text-primary">
+                    Sign Up
+                  </Link>
+                </p>
+              </div>
+
             </div>
           </div>
         </div>

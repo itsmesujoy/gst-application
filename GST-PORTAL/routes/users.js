@@ -4,10 +4,11 @@ const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const { authMiddleware }= require('../auth/authMiddleware');
 require('dotenv').config()
 
 /* GET users listing. */
-router.get('/',async function(req, res, next) {
+router.get('/',authMiddleware,async function(req, res, next) {
 
   const query = await  req.db.exec('SELECT * FROM "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData"');
   console.log(query);

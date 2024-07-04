@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png';
 
 const DropdownUser = () => {
+  const navigate =useNavigate()
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const handleLogout=()=>{
     localStorage.removeItem("token")
+    navigate("/")
     window.location.reload()
   }
 
