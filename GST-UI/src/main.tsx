@@ -6,10 +6,28 @@ import './css/style.css';
 import './css/satoshi.css';
 import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+import './toastify-custom.css';
+
+
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Router>
+     
+    <ToastContainer
+        position="bottom-center"
+        autoClose={1000} 
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        limit={1}
+        pauseOnHover
+        toastClassName="custom-toast" />
       <App />
     </Router>
   </React.StrictMode>,

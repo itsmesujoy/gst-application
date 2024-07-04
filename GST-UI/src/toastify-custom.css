@@ -1,0 +1,18 @@
+
+.custom-toast {
+    background-color:#f0f0f0;
+    color: #333;
+    font-size: 16px;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  
+  .custom-toast .Toastify__toast-body {
+    display: flex;
+    align-items: center;
+  }
+  
+  .custom-toast .Toastify__close-button {
+    color: #fff;
+  }
+  

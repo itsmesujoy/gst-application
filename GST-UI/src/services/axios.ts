@@ -30,13 +30,15 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   error => {
+   
+    
     // Handle response error here
     if (error.response && error.response.status === 401) {
       // handle unauthorized error
       console.log('Unauthorized, redirecting to login...');
       // perform logout or redirect to login
     }
-    return Promise.reject(error);
+    return error?.response?.data;
   }
 );
 

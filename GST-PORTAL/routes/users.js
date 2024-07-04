@@ -8,10 +8,9 @@ const { authMiddleware }= require('../auth/authMiddleware');
 require('dotenv').config()
 
 /* GET users listing. */
-router.get('/',authMiddleware,async function(req, res, next) {
+router.get('/ping',authMiddleware,async function(req, res, next) {
 
-  const query = await  req.db.exec('SELECT * FROM "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData"');
-  console.log(query);
+
   res.json({msg:"hellooo"});
 });
 

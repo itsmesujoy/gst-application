@@ -6,15 +6,25 @@ import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import { LoginService } from '../../services/loginservice';
 
+import { toast } from 'react-toastify';
+
 const SignIn: React.FC = () => {
   const [LoginData, setLoginData] = useState<any>({})
 
   const handleLogin = async () => {
-    let data = await LoginService(LoginData)
+    try {
+      let data:any = await LoginService(LoginData);
+      console.log(data);
 
-    localStorage.setItem("token", data.token)
-    window.location.reload()
-  }
+      localStorage.setItem("token", data.data.token);
+      window.location.reload();
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("Invalid email or password")
+    
+    }
+  };
+  
   return (
     <>
 
