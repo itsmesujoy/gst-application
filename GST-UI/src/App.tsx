@@ -16,6 +16,7 @@ import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
+import OtpVerify from './pages/Authentication/OtpVerify';
 
 function App() {
   const [loading, setLoading] = useState<boolean>();
@@ -55,6 +56,15 @@ function App() {
             <>
              
               <SignUp />
+            </>
+          }
+        />
+          <Route
+         path="/otp"
+          element={
+            <>
+             
+              <OtpVerify />
             </>
           }
         />

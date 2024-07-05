@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import { LoginService } from '../../services/loginservice';
@@ -10,14 +10,19 @@ import { toast } from 'react-toastify';
 
 const SignIn: React.FC = () => {
   const [LoginData, setLoginData] = useState<any>({})
+  const navigate=useNavigate()
 
   const handleLogin = async () => {
     try {
       let data:any = await LoginService(LoginData);
       console.log(data);
-
-      localStorage.setItem("token", data.data.token);
-      window.location.reload();
+      if(data?.data?.message=== "OTP sent to your email"){
+      navigate("/otp")}
+      else{
+        toast.error("Invalid email or password")
+      }
+      // localStorage.setItem("token", data.data.token);
+      // window.location.reload();
     } catch (error) {
       console.error("Login failed:", error);
       toast.error("Invalid email or password")
