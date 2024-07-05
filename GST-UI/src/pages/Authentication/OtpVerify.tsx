@@ -2,15 +2,33 @@
 import React, { useState } from 'react';
 
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
+import { VerifyOtp } from '../../services/loginservice';
 
 
 const OtpVerify: React.FC = () => {
   const [otp, setOtp] = useState<any>()
 
- 
-  
+  const handleVerifyOtp = async () => {
+    let data: any = await VerifyOtp({
+      email: "sreejith@ivldsps.com",
+      otp: otp
+    })
+    console.log(data);
+
+    if (data?.message) {
+      toast.error(data?.message)
+    }
+    else {
+      localStorage.setItem("token", data.data.token);
+
+      window.location.replace('/')
+    }
+  }
+
+
   return (
     <>
 
@@ -27,7 +45,7 @@ const OtpVerify: React.FC = () => {
 
 
               <span className="mt-15 inline-block">
-             
+
               </span>
             </div>
           </div>
@@ -40,31 +58,31 @@ const OtpVerify: React.FC = () => {
               </h2>
 
 
-            
+
 
               <div className="mb-6">
                 <label className="mb-2.5 block font-medium text-black dark:text-white">
-                OTP
+                  OTP
                 </label>
                 <div className="relative">
                   <input
-                     onChange={(e) => {
-                      setOtp( e.target.value )
+                    onChange={(e) => {
+                      setOtp(e.target.value)
                     }}
                     type="password"
-                    placeholder="6+ Characters, 1 Capital letter"
+                 
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
 
                   <span className="absolute right-4 top-4">
-                    
+
                   </span>
                 </div>
               </div>
 
               <div className="mb-5">
                 <input
-                  
+                  onClick={handleVerifyOtp}
                   type="submit"
                   value="Submit OTP"
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
@@ -73,7 +91,7 @@ const OtpVerify: React.FC = () => {
 
 
 
-           
+
 
             </div>
           </div>
