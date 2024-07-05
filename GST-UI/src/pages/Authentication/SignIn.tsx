@@ -4,9 +4,11 @@ import React, { useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
-import { LoginService } from '../../services/loginservice';
+
 
 import { toast } from 'react-toastify';
+import { LoginService } from '../../services/loginservice';
+import axios from 'axios';
 
 const SignIn: React.FC = () => {
   const [LoginData, setLoginData] = useState<any>({})
@@ -14,15 +16,15 @@ const SignIn: React.FC = () => {
 
   const handleLogin = async () => {
     try {
-      let data:any = await LoginService(LoginData);
+      let data:any = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/login",LoginData)
       console.log(data);
       if(data?.data?.message=== "OTP sent to your email"){
+        
       navigate("/otp")}
       else{
         toast.error("Invalid email or password")
       }
-      // localStorage.setItem("token", data.data.token);
-      // window.location.reload();
+     
     } catch (error) {
       console.error("Login failed:", error);
       toast.error("Invalid email or password")
