@@ -1,9 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
+import axios from 'axios';
 
 const SignUp: React.FC = () => {
+  const [signupData, setSignupData] = useState<any>({})
+  const navigate=useNavigate()
+
+  const handleSignUp=async()=>{
+    if(signupData.password===signupData.password2){
+      await  await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/signup",signupData)
+      toast.success("Sign-up successfull")
+      navigate("/")
+    }
+    else{
+      toast.error("password did not match")
+    }
+  }
   return (
     <>
   
@@ -28,16 +43,17 @@ const SignUp: React.FC = () => {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <span className="mb-1.5 block font-medium">Start for free</span>
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Sign Up to TailAdmin
+                Sign Up to GST Req
               </h2>
 
-              <form>
+         
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Name
                   </label>
                   <div className="relative">
                     <input
+                    onChange={(e)=>{setSignupData({...signupData,username:e.target.value})}}
                       type="text"
                       placeholder="Enter your full name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -55,6 +71,7 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                     onChange={(e)=>{setSignupData({...signupData,email:e.target.value})}}
                       type="email"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -72,6 +89,7 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                      onChange={(e)=>{setSignupData({...signupData,password:e.target.value})}}
                       type="password"
                       placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -89,6 +107,7 @@ const SignUp: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
+                      onChange={(e)=>{setSignupData({...signupData,password2:e.target.value})}}
                       type="password"
                       placeholder="Re-enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
@@ -102,6 +121,7 @@ const SignUp: React.FC = () => {
 
                 <div className="mb-5">
                   <input
+                  onClick={handleSignUp}
                     type="submit"
                     value="Create account"
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
@@ -112,12 +132,12 @@ const SignUp: React.FC = () => {
                 <div className="mt-6 text-center">
                   <p>
                     Already have an account?{' '}
-                    <Link to="/" className="text-primary">
+                    <Link to="/" className="text-primary" >
                       Sign in
                     </Link>
                   </p>
                 </div>
-              </form>
+       
             </div>
           </div>
         </div>

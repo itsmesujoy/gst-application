@@ -19,3 +19,13 @@ export const VerifyOtp = async (data:any) => {
     return error;
   }
 };
+
+export const signUp = async (data:any) => {
+  try {
+    const response = await axiosInstance.post('/users/signup',data);
+    return response;
+  } catch (error) {
+    console.error( error);
+    return error;
+  }
+};
