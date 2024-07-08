@@ -20,7 +20,7 @@ const SignIn: React.FC = () => {
       console.log(data);
       if(data?.data?.message=== "OTP sent to your email"){
         
-      navigate("/otp")}
+      navigate("/otp",{ state: { data: LoginData.email } })}
       else{
         toast.error("Invalid email or password")
       }

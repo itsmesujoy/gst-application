@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
@@ -11,9 +11,12 @@ import { VerifyOtp } from '../../services/loginservice';
 const OtpVerify: React.FC = () => {
   const [otp, setOtp] = useState<any>()
 
+  const location = useLocation();
+  const email = location.state?.data;
+
   const handleVerifyOtp = async () => {
     let data: any = await VerifyOtp({
-      email: "sreejith@ivldsps.com",
+      email: email,
       otp: otp
     })
     console.log(data);

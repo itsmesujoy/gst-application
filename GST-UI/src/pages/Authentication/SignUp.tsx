@@ -10,13 +10,20 @@ const SignUp: React.FC = () => {
   const navigate=useNavigate()
 
   const handleSignUp=async()=>{
+    try{
     if(signupData.password===signupData.password2){
-      await  await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/signup",signupData)
+    let data=   await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/signup",signupData)
+    console.log(data);
+    
       toast.success("Sign-up successfull")
       navigate("/")
     }
     else{
       toast.error("password did not match")
+    }}
+    catch(error:any){
+      toast.error(error?.response?.data?.message);
+      
     }
   }
   return (
