@@ -1,4 +1,5 @@
 var express = require('express');
+const crypto = require('crypto');
 var router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
@@ -178,6 +179,86 @@ router.post('/resend-otp',async (req, res) => {
     res.json({ message: 'OTP sent to your email' });
   });
 
+});
+
+router.post('/forgot-password',async (req, res) => {
+  const db=req.db
+  const { email } = req.body;
+  const query = `SELECT * FROM "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" WHERE EMAIL = ?`;
+  const result = await db.exec(query, [email]);
+
+  if (result.length === 0) {
+    return res.status(404).send('User not found');
+  }
+
+ 
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  const resetTokenExpiry = Date.now() + 3600000; 
+
+ 
+  const updateQuery = `UPDATE "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" SET RESETTOKEN = ? , RESETTOKENEXPIRY = ? WHERE EMAIL = ?`;
+  const update = await db.exec(updateQuery, [resetToken,resetTokenExpiry, email]);
+ 
+  const resetLink = `${process.env.Front_END_URL}/reset-password?token=${resetToken}&email=${email}`;
+
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.MAILTRAP_HOST,
+    port: process.env.MAILTRAP_PORT,
+    auth: {
+      user: process.env.MAILTRAP_USER,
+      pass: process.env.MAILTRAP_PASS
+    }
+  });
+
+  transporter.sendMail({
+    from: 'AdminGstReq@ivldsp.com',
+    to: email,
+    subject: 'Your Password reset link',
+    html: `
+    <p>Hi,</p>
+    <p>You requested a password reset. Click the link below to reset your password:</p>
+    <a href="${resetLink}">Reset Password</a>
+    <p>If you did not request this, please ignore this email.</p>
+    <p>Thanks,<br>Your Company</p>
+  `
+  }, (err, info) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message: 'Error sending OTP' });
+    }
+    
+    res.json({ message: 'Password reset link was sent to your mail' });
+  });
+
+
+  // Send email
+
+});
+
+router.post('/reset-password', async (req, res) => {
+  const { token, email, password } = req.body;
+  const db =req.db
+  const query = `SELECT * FROM "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" WHERE EMAIL = ?`;
+  const result = await db.exec(query, [email]);
+
+const user=result[0]
+  if (!user || user.RESETTOKENEXPIRY < Date.now()) {
+    return res.status(400).send('Invalid or expired token');
+  }
+
+  // Hash the new password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Update user's password and clear reset token
+  user.password = hashedPassword;
+  user.resetToken = null;
+  user.resetTokenExpiry = null;
+
+  const updateQuery = `UPDATE "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" SET PASSWORD = ? , RESETTOKEN = ? , RESETTOKENEXPIRY = ? WHERE EMAIL = ?`;
+  const update = await db.exec(updateQuery, [hashedPassword,null,null, email]);
+
+  res.json({ message:'Password has been reset'});
 });
 
 module.exports = router;

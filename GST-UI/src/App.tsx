@@ -4,8 +4,10 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import DefaultLayout from './layout/DefaultLayout';
+import OtpVerify from './pages/Authentication/OtpVerify';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
+import ForgotPassword from './pages/Authentication/forgotPassword';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
@@ -16,7 +18,7 @@ import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
-import OtpVerify from './pages/Authentication/OtpVerify';
+import ResetPassword from './pages/Authentication/resetPassword';
 
 function App() {
   const [loading, setLoading] = useState<boolean>();
@@ -47,6 +49,24 @@ function App() {
             <>
              
               <SignIn />
+            </>
+          }
+        />
+        <Route
+         path="/forgot-password"
+          element={
+            <>
+             
+              <ForgotPassword />
+            </>
+          }
+        />
+         <Route
+         path="/reset-password"
+          element={
+            <>
+             
+              <ResetPassword />
             </>
           }
         />
