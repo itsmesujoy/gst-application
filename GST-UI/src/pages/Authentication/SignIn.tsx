@@ -19,7 +19,7 @@ const SignIn: React.FC = () => {
       let data:any = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/login",LoginData)
       console.log(data);
       if(data?.data?.message=== "OTP sent to your email"){
-        
+        toast.success(data?.data?.message)
       navigate("/otp",{ state: { data: LoginData.email } })}
       else{
         toast.error("Invalid email or password")

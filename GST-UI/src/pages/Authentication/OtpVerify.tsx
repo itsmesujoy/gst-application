@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import { VerifyOtp } from '../../services/loginservice';
+import axios from 'axios';
 
 
 const OtpVerify: React.FC = () => {
@@ -13,6 +14,14 @@ const OtpVerify: React.FC = () => {
 
   const location = useLocation();
   const email = location.state?.data;
+
+  const handleResendOtp = async () => {
+    
+    let data = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/resend-otp",{email:email})
+console.log(data);
+
+    toast.success(data?.data?.message)
+  }
 
   const handleVerifyOtp = async () => {
     let data: any = await VerifyOtp({
@@ -73,7 +82,7 @@ const OtpVerify: React.FC = () => {
                       setOtp(e.target.value)
                     }}
                     type="password"
-                 
+
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
 
@@ -92,6 +101,14 @@ const OtpVerify: React.FC = () => {
                 />
               </div>
 
+              <div className="mt-6 text-center">
+  <p>
+    Do you want to resend
+    <span className="text-primary" onClick={handleResendOtp} style={{ cursor: "pointer", marginLeft: "5px" }}>
+      OTP?
+    </span>
+  </p>
+</div>
 
 
 

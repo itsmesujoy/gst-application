@@ -29,3 +29,13 @@ export const signUp = async (data:any) => {
     return error;
   }
 };
+
+export const resendOtp = async (data:any) => {
+  try {
+    const response = await axiosInstance.post('/users/resend-otp',data);
+    return response;
+  } catch (error) {
+    console.error( error);
+    return error;
+  }
+};
