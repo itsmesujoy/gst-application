@@ -15,7 +15,7 @@ const ResetPassword: React.FC = () => {
     const [password, setPassword] = useState<any>({})
     const navigate = useNavigate()
     const location = useLocation();
-    
+
     const query = new URLSearchParams(location.search);
     const token = query.get('token');
     const email = query.get('email');
@@ -26,7 +26,7 @@ const ResetPassword: React.FC = () => {
                 let data: any = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/reset-password", {
                     password: password.password1,
                     email: email,
-                    token:token
+                    token: token
                 })
                 toast.success(data?.data?.message)
                 navigate("/")
@@ -235,6 +235,19 @@ const ResetPassword: React.FC = () => {
                                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                                 />
                             </div>
+
+                            <div className="mt-6 text-center">
+                                
+                                <p>
+                                    Back to
+
+                                    <Link to="/" className="text-primary" style={{ marginLeft: "5px" }} >
+                                        Log in
+                                    </Link>
+
+                                </p>
+                            </div>
+
 
 
 

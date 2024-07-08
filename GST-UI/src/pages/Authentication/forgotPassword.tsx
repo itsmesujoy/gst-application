@@ -200,8 +200,16 @@ const ForgotPassword: React.FC = () => {
                 />
               </div>
 
+              <div  className="mt-6 text-center">
+              <p>
+                 Back to
 
+                  <Link to="/" className="text-primary"  style={{  marginLeft: "5px" }} >
+                    Log in
+                  </Link>
 
+                </p>
+                </div>
 
 
             </div>

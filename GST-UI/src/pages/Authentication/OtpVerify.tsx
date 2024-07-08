@@ -16,9 +16,9 @@ const OtpVerify: React.FC = () => {
   const email = location.state?.data;
 
   const handleResendOtp = async () => {
-    
-    let data = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/resend-otp",{email:email})
-console.log(data);
+
+    let data = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/resend-otp", { email: email })
+    console.log(data);
 
     toast.success(data?.data?.message)
   }
@@ -102,13 +102,21 @@ console.log(data);
               </div>
 
               <div className="mt-6 text-center">
-  <p>
-    Do you want to resend
-    <span className="text-primary" onClick={handleResendOtp} style={{ cursor: "pointer", marginLeft: "5px" }}>
-      OTP?
-    </span>
-  </p>
-</div>
+                <p>
+                  Do you want to resend
+                  <span className="text-primary" onClick={handleResendOtp} style={{ cursor: "pointer", marginLeft: "5px" }}>
+                    OTP?
+                  </span>
+                </p>
+                <p>
+                or Back to
+
+                  <Link to="/" className="text-primary"  style={{  marginLeft: "5px" }} >
+                    Log in
+                  </Link>
+
+                </p>
+              </div>
 
 
 
