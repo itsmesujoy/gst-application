@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 
@@ -14,13 +14,19 @@ import axios from 'axios';
 const ResetPassword: React.FC = () => {
     const [password, setPassword] = useState<any>({})
     const navigate = useNavigate()
+    const location = useLocation();
+    
+    const query = new URLSearchParams(location.search);
+    const token = query.get('token');
+    const email = query.get('email');
 
     const handleResetPassword = async () => {
         try {
             if (password.password1 === password.password2) {
                 let data: any = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/reset-password", {
                     password: password.password1,
-                    email: "sreejith@ivldsps.com"
+                    email: email,
+                    token:token
                 })
                 toast.success(data?.data?.message)
                 navigate("/")

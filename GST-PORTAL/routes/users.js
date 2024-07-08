@@ -19,17 +19,17 @@ router.get('/ping',authMiddleware,async function(req, res, next) {
 router.post('/signup', async (req, res) => {
   const { username, password,email } = req.body;
  const id=uuidv4()
- const db =req.db
+ const { db } = req;
   try {
-    const query = `SELECT * FROM "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" WHERE EMAIL = ?`;
-    let userDetails = await db.exec(query, [email]);
+    const query = `SELECT * FROM "${db.schema}"."userData" WHERE EMAIL = ?`;
+    let userDetails = await  db.connection.exec(query, [email]);
     if(userDetails.length>0){
       res.status(400).json({ message: 'user already exist' });
     }
     else{
       const hashedPassword = await bcrypt.hash(password, 10);
-      const createUser = await db.exec(
-        `INSERT INTO "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" (ID, NAME, EMAIL, PASSWORD) VALUES (?, ?, ?, ?)`,
+      const createUser = await  db.connection.exec(
+        `INSERT INTO "${db.schema}"."userData" (ID, NAME, EMAIL, PASSWORD) VALUES (?, ?, ?, ?)`,
         [id, username, email, hashedPassword]
       );
      
@@ -57,8 +57,8 @@ const db=req.db
         pass: process.env.MAILTRAP_PASS
       }
     });
-    const query = `SELECT * FROM "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" WHERE EMAIL = ?`;
-    const result = await db.exec(query, [email]);
+    const query = `SELECT * FROM "${db.schema}"."userData" WHERE EMAIL = ?`;
+    const result = await  db.connection.exec(query, [email]);
 
     if (result.length === 0) {
       return res.status(400).json({ message: 'Invalid email or password' });
@@ -73,8 +73,8 @@ const db=req.db
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
  
-    const updateQuery = `UPDATE "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" SET OTP = ? , OTPVALIDITY = ? WHERE EMAIL = ?`;
-    const update = await db.exec(updateQuery, [otp,Date.now() + 10 * 60 * 1000, email]);
+    const updateQuery = `UPDATE "${db.schema}"."userData" SET OTP = ? , OTPVALIDITY = ? WHERE EMAIL = ?`;
+    const update = await  db.connection.exec(updateQuery, [otp,Date.now() + 10 * 60 * 1000, email]);
     
 
     transporter.sendMail({
@@ -118,9 +118,9 @@ const db=req.db
 
 router.post('/verify-otp',async (req, res) => {
   const { email, otp } = req.body;
-  const db=req.db
-  const query = `SELECT * FROM "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" WHERE EMAIL = ?`;
-  const result = await db.exec(query, [email]);
+  const { db } = req;
+  const query = `SELECT * FROM "${db.schema}"."userData" WHERE EMAIL = ?`;
+  const result = await  db.connection.exec(query, [email]);
   const user=result[0]
   if (result[0]?.OTP !== otp) {
     return res.status(401).json({ message: 'Invalid OTP' });
@@ -134,7 +134,7 @@ router.post('/verify-otp',async (req, res) => {
 
 router.post('/resend-otp',async (req, res) => {
   const { email } = req.body;
-  const db=req.db
+  const { db } = req;
   const transporter = nodemailer.createTransport({
     host: process.env.MAILTRAP_HOST,
     port: process.env.MAILTRAP_PORT,
@@ -144,8 +144,8 @@ router.post('/resend-otp',async (req, res) => {
     }
   });
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const updateQuery = `UPDATE "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" SET OTP = ? , OTPVALIDITY = ? WHERE EMAIL = ?`;
-  const update = await db.exec(updateQuery, [otp,Date.now() + 10 * 60 * 1000, email]);
+  const updateQuery = `UPDATE "${db.schema}"."userData" SET OTP = ? , OTPVALIDITY = ? WHERE EMAIL = ?`;
+  const update = await  db.connection.exec(updateQuery, [otp,Date.now() + 10 * 60 * 1000, email]);
   
 
   transporter.sendMail({
@@ -182,10 +182,10 @@ router.post('/resend-otp',async (req, res) => {
 });
 
 router.post('/forgot-password',async (req, res) => {
-  const db=req.db
+  const { db } = req;
   const { email } = req.body;
-  const query = `SELECT * FROM "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" WHERE EMAIL = ?`;
-  const result = await db.exec(query, [email]);
+  const query = `SELECT * FROM "${db.schema}"."userData" WHERE EMAIL = ?`;
+  const result = await  db.connection.exec(query, [email]);
 
   if (result.length === 0) {
     return res.status(404).send('User not found');
@@ -196,8 +196,8 @@ router.post('/forgot-password',async (req, res) => {
   const resetTokenExpiry = Date.now() + 3600000; 
 
  
-  const updateQuery = `UPDATE "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" SET RESETTOKEN = ? , RESETTOKENEXPIRY = ? WHERE EMAIL = ?`;
-  const update = await db.exec(updateQuery, [resetToken,resetTokenExpiry, email]);
+  const updateQuery = `UPDATE "${db.schema}"."userData" SET RESETTOKEN = ? , RESETTOKENEXPIRY = ? WHERE EMAIL = ?`;
+  const update = await  db.connection.exec(updateQuery, [resetToken,resetTokenExpiry, email]);
  
   const resetLink = `${process.env.Front_END_URL}/reset-password?token=${resetToken}&email=${email}`;
 
@@ -238,25 +238,24 @@ router.post('/forgot-password',async (req, res) => {
 
 router.post('/reset-password', async (req, res) => {
   const { token, email, password } = req.body;
-  const db =req.db
-  const query = `SELECT * FROM "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" WHERE EMAIL = ?`;
-  const result = await db.exec(query, [email]);
+  const { db } = req;
+  const query = `SELECT * FROM "${db.schema}"."userData" WHERE EMAIL = ?`;
+  const result = await  db.connection.exec(query, [email]);
 
 const user=result[0]
   if (!user || user.RESETTOKENEXPIRY < Date.now()) {
     return res.status(400).send('Invalid or expired token');
   }
 
-  // Hash the new password
+
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Update user's password and clear reset token
   user.password = hashedPassword;
   user.resetToken = null;
   user.resetTokenExpiry = null;
 
-  const updateQuery = `UPDATE "10E12495F1164C51B8772F9B355264FA_6YYR2QQD4L5YCNCH32FANUUXQ_DT"."userData" SET PASSWORD = ? , RESETTOKEN = ? , RESETTOKENEXPIRY = ? WHERE EMAIL = ?`;
-  const update = await db.exec(updateQuery, [hashedPassword,null,null, email]);
+  const updateQuery = `UPDATE "${db.schema}"."userData" SET PASSWORD = ? , RESETTOKEN = ? , RESETTOKENEXPIRY = ? WHERE EMAIL = ?`;
+  const update = await  db.connection.exec(updateQuery, [hashedPassword,null,null, email]);
 
   res.json({ message:'Password has been reset'});
 });
