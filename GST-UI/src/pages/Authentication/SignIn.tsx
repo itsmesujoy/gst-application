@@ -9,15 +9,18 @@ import Logo from '../../images/logo/logo.svg';
 import { toast } from 'react-toastify';
 // import { LoginService } from '../../services/loginservice';
 import axios from 'axios';
+import Loader from '../utility/Loader';
 
 const SignIn: React.FC = () => {
   const [LoginData, setLoginData] = useState<any>({})
+  const [loader, setLoader] = useState(false)
   const navigate=useNavigate()
 
   const handleLogin = async () => {
     try {
+      setLoader(true)
       let data:any = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/login",LoginData)
-      console.log(data);
+      setLoader(false)
       if(data?.data?.message=== "OTP sent to your email"){
         toast.success(data?.data?.message)
       navigate("/otp",{ state: { data: LoginData.email } })}
@@ -26,6 +29,7 @@ const SignIn: React.FC = () => {
       }
      
     } catch (error) {
+      setLoader(false)
       console.error("Login failed:", error);
       toast.error("Invalid email or password")
     
@@ -34,9 +38,7 @@ const SignIn: React.FC = () => {
   
   return (
     <>
-
-
-      <div className="rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark" style={{ backgroundColor: "#fbfbfb" }}>
+{loader?<Loader/>: <div className="rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark" style={{ backgroundColor: "#fbfbfb" }}>
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
@@ -144,7 +146,9 @@ const SignIn: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
+
+     
     </>
   );
 };

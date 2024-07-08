@@ -7,28 +7,31 @@ import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import { VerifyOtp } from '../../services/loginservice';
 import axios from 'axios';
+import Loader from '../utility/Loader';
 
 
 const OtpVerify: React.FC = () => {
   const [otp, setOtp] = useState<any>()
-
+  const [loader, setLoader] = useState(false)
   const location = useLocation();
   const email = location.state?.data;
 
   const handleResendOtp = async () => {
-
+    setLoader(true)
     let data = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/resend-otp", { email: email })
     console.log(data);
-
+    setLoader(false)
     toast.success(data?.data?.message)
   }
 
   const handleVerifyOtp = async () => {
+    setLoader(true)
     let data: any = await VerifyOtp({
       email: email,
       otp: otp
     })
     console.log(data);
+  
 
     if (data?.message) {
       toast.error(data?.message)
@@ -37,15 +40,14 @@ const OtpVerify: React.FC = () => {
       localStorage.setItem("token", data.data.token);
 
       window.location.replace('/')
+    
     }
   }
 
 
   return (
     <>
-
-
-      <div className="rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark" style={{ backgroundColor: "#fbfbfb" }}>
+{loader?<Loader/>:   <div className="rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark" style={{ backgroundColor: "#fbfbfb" }}>
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="py-17.5 px-26 text-center">
@@ -124,7 +126,9 @@ const OtpVerify: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
+
+   
     </>
   );
 };

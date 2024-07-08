@@ -8,16 +8,20 @@ import Logo from '../../images/logo/logo.svg';
 
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import Loader from '../utility/Loader';
 
 
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState<any>()
   const navigate = useNavigate()
+  const [loader, setLoader] = useState(false)
 
   const handleforgotPassword = async () => {
+    setLoader(true)
     let data: any = await axios.post("https://GST-PORTAL.cfapps.eu10.hana.ondemand.com/users/forgot-password", {email:email})
     toast.success(data?.data?.message)
+    setLoader(false)
     navigate("/")
   }
 
@@ -25,8 +29,7 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <>
-
-
+{loader?<Loader/>:
       <div className="rounded-sm border border-stroke shadow-default dark:border-strokedark dark:bg-boxdark" style={{ backgroundColor: "#fbfbfb" }}>
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
@@ -215,7 +218,8 @@ const ForgotPassword: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
+
     </>
   );
 };
