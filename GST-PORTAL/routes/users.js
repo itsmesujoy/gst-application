@@ -193,7 +193,7 @@ router.post('/forgot-password',async (req, res) => {
 
  
   const resetToken = crypto.randomBytes(32).toString('hex');
-  const resetTokenExpiry = Date.now() + 3600000; 
+  const resetTokenExpiry = Date.now() + 10 * 60 * 1000; 
 
  
   const updateQuery = `UPDATE "${db.schema}"."userData" SET RESETTOKEN = ? , RESETTOKENEXPIRY = ? WHERE EMAIL = ?`;
@@ -259,5 +259,24 @@ const user=result[0]
 
   res.json({ message:'Password has been reset'});
 });
+
+router.post('/expired-link', async (req, res) => {
+  const {  email } = req.body;
+  const { db } = req;
+  const query = `SELECT * FROM "${db.schema}"."userData" WHERE EMAIL = ?`;
+  const result = await  db.connection.exec(query, [email]);
+
+const user=result[0]
+  if (!user || user.RESETTOKENEXPIRY < Date.now()) {
+    return res.json({message:'Invalid or expired token'});
+  }
+else{
+  return res.json({message:'link till valid'});
+}
+
+  
+});
+
+
 
 module.exports = router;

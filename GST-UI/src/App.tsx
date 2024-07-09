@@ -19,6 +19,7 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import ResetPassword from './pages/Authentication/resetPassword';
+import LinkExpired from './pages/Authentication/LinkExpired';
 
 function App() {
   const [loading, setLoading] = useState<boolean>();
@@ -67,6 +68,15 @@ function App() {
             <>
              
               <ResetPassword />
+            </>
+          }
+        />
+         <Route
+         path="/link-expired"
+          element={
+            <>
+             
+              <LinkExpired />
             </>
           }
         />
