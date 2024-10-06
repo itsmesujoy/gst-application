@@ -31,8 +31,11 @@ const ResetPassword: React.FC = () => {
     
     if (data?.data?.message === "Invalid or expired token") {
       navigate("/link-expired")
-      setLoader(false)
+    
     }
+  
+    
+    setLoader(false)
   }
   const handleResetPassword = async () => {
     try {

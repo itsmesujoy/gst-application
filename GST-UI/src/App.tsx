@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
 import Loader from './common/Loader';
+import ChartThree from './components/Charts/inwardEwb';
 import PageTitle from './components/PageTitle';
 import DefaultLayout from './layout/DefaultLayout';
+import LinkExpired from './pages/Authentication/LinkExpired';
 import OtpVerify from './pages/Authentication/OtpVerify';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import ForgotPassword from './pages/Authentication/forgotPassword';
+import ResetPassword from './pages/Authentication/resetPassword';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
@@ -18,8 +21,10 @@ import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
-import ResetPassword from './pages/Authentication/resetPassword';
-import LinkExpired from './pages/Authentication/LinkExpired';
+import InwardEwb from './components/Charts/inwardEwb';
+import InwardInv from './components/Charts/inwardInv';
+import MatchedDataPage from './components/Charts/MatchedData';
+import UNMatchedDataPage from './components/Charts/unMatchedData';
 
 function App() {
   const [loading, setLoading] = useState<boolean>();
@@ -166,11 +171,38 @@ function App() {
           }
         />
         <Route
-          path="/chart"
+          path="/InwardEWB"
           element={
             <>
               <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Chart />
+              <InwardEwb />
+            </>
+          }
+        />
+          <Route
+          path="/InwardEWB/matched-data"
+          element={
+            <>
+              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <MatchedDataPage />
+            </>
+          }
+        />
+           <Route
+          path="/InwardEWB/unmatched-data"
+          element={
+            <>
+              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <UNMatchedDataPage />
+            </>
+          }
+        />
+        <Route
+          path="/InwardINV"
+          element={
+            <>
+              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <InwardInv />
             </>
           }
         />
