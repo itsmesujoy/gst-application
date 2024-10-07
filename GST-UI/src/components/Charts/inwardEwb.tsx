@@ -14,7 +14,7 @@ const options: ApexOptions = {
     fontFamily: 'Satoshi, sans-serif',
     type: 'donut',
   },
-  colors: ['#3C50E0', '#6577F3', '#8FD0EF'],
+  colors: ['#6B5B95', '#FF6F61', '#8FD0EF'],
   labels: [
     'Inward EWB not posted in ERP',
     'Matched data',
@@ -142,8 +142,8 @@ const InwardEwb: React.FC = () => {
           value={viewType}
           onChange={handleViewChange}
         >
-          <option value="value">Value Wise</option>
-          <option value="count">Count Wise</option>
+          <option value="value">Count</option>
+          <option value="count">Amount</option>
         </select>
       </div>
 
@@ -168,7 +168,7 @@ const InwardEwb: React.FC = () => {
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6B5B95]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span>Inward EWB not posted in ERP</span>
               <span>{viewType === 'value' ? 650 : 9500500}</span>
@@ -177,7 +177,7 @@ const InwardEwb: React.FC = () => {
         </div>
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#FF6F61]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span>Matched data</span>
               <span>{viewType === 'value' ? 35870 : 621120050}</span>

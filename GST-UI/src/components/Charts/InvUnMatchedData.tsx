@@ -10,7 +10,7 @@ interface ChartThreeState {
 
 
 
-const UNMatchedDataPage: React.FC = () => {
+const InvUNMatchedDataPage: React.FC = () => {
   const [state, setState] = useState<ChartThreeState>({
     series: [{ name: 'Value', data: [12, 505, 125, 8] }],
   });
@@ -40,7 +40,7 @@ const UNMatchedDataPage: React.FC = () => {
       type: 'bar', // Keep as bar, but will be horizontal
       height: 400,
     },
-    colors: "#6B5B95",
+    colors: "#FF9F1C",
     xaxis: {
       title: {
         text: '',
@@ -165,4 +165,4 @@ const UNMatchedDataPage: React.FC = () => {
   );
 };
 
-export default UNMatchedDataPage;
+export default InvUNMatchedDataPage;

@@ -3,19 +3,61 @@ import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useNavigate } from 'react-router-dom';
 
 interface ChartThreeState {
   series: { name: string; data: number[] }[];
 }
 
+const options: ApexOptions = {
+  chart: {
+    fontFamily: 'Satoshi, sans-serif',
+    type: 'bar',
+  },
+  colors: ['#008080', '#FF7F50'],
+  xaxis: {
+    categories: ['Exact Match / Acceptable differences', 'Mismatch Data'],
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true, // Set this to true for horizontal bars
+      endingShape: 'rounded',
+      columnWidth: '50%',
+    },
+  },
+  legend: {
+    show: false,
+    position: 'bottom',
+  },
+  dataLabels: {
+    enabled: true,
+  },
+  responsive: [
+    {
+      breakpoint: 2600,
+      options: {
+        chart: {
+          width: 900,
+        },
+      },
+    },
+    {
+      breakpoint: 640,
+      options: {
+        chart: {
+          width: 200,
+        },
+      },
+    },
+  ],
+};
 
-
-const UNMatchedDataPage: React.FC = () => {
+const InvMatchedDataPage: React.FC = () => {
   const [state, setState] = useState<ChartThreeState>({
-    series: [{ name: 'Value', data: [12, 505, 125, 8] }],
+    series: [{ name: 'Value', data: [34920, 950] }], // Initial value-wise data
   });
-
-  const [viewType, setViewType] = useState('value');
+  const navigate = useNavigate();
+  const [viewType, setViewType] = useState('value'); // State to manage dropdown value
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
@@ -28,85 +70,19 @@ const UNMatchedDataPage: React.FC = () => {
     const value = e.target.value;
     setViewType(value);
     if (value === 'value') {
-      setState({ series: [{ name: 'Value', data: [12, 505, 125, 8] }] }); 
+      // Count series
+      setState({ series: [{ name: 'Value', data: [34920, 950] }] });
     } else {
-      setState({ series: [{ name: 'Count', data: [92000, 7225000, 2105500, 78000] }] }); 
+      // Amount series
+      setState({ series: [{ name: 'Count', data: [602510100, 18609950] }] });
     }
-  };
-
-  const options: ApexOptions = {
-    chart: {
-      fontFamily: 'Satoshi, sans-serif',
-      type: 'bar', // Keep as bar, but will be horizontal
-      height: 400,
-    },
-    colors: "#6B5B95",
-    xaxis: {
-      title: {
-        text: '',
-      },
-      labels: {
-        style: {
-          fontSize: '12px',
-        },
-      },
-      categories: [
-        'GR found, invoice pending',
-        'PO found, GR & invoice pending',
-        'Vendor found in Vendor master, PO, GR & invoice pending',
-        'No vendor found in vendor master'
-      ],
-      tickPlacement: 'between',
-    },
-    yaxis: {
-      title: {
-        text: '',
-      },
-      labels: {
-        style: {
-          fontSize: '12px',
-        },
-      },
-    },
-    legend: {
-      show: false,
-      position: 'bottom',
-    },
-    dataLabels: {
-      enabled: true,
-    },
-    plotOptions: {
-      bar: {
-        horizontal: true, // Set this to true for horizontal bars
-        endingShape: 'rounded', 
-        columnWidth: '50%',
-      },
-    },
-    responsive: [
-      {
-        breakpoint: 2600,
-        options: {
-          chart: {
-            width: 900,
-          },
-        },
-      },
-      {
-        breakpoint: 640,
-        options: {
-          chart: {
-            width: 300,
-          },
-        },
-      },
-    ],
   };
 
   return (
     <div className="sm:px-7.5 col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5">
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
-          <h5 className="text-xl font-semibold text-black dark:text-white">Inward EWB not posted in ERP</h5>
+          <h5 className="text-xl font-semibold text-black dark:text-white">Invoice Matched Data </h5>
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex flex-col">
@@ -161,8 +137,10 @@ const UNMatchedDataPage: React.FC = () => {
           <ReactApexChart options={options} series={state.series} type="bar" height={400} />
         </div>
       </div>
+
+ 
     </div>
   );
 };
 
-export default UNMatchedDataPage;
+export default InvMatchedDataPage;

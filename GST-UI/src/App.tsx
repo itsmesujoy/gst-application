@@ -2,8 +2,14 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
 import Loader from './common/Loader';
-import ChartThree from './components/Charts/inwardEwb';
+import InvMatchedDataPage from './components/Charts/InvMatchedData';
+import InvUNMatchedDataPage from './components/Charts/InvUnMatchedData';
+import MatchedDataPage from './components/Charts/MatchedData';
+import InwardEwb from './components/Charts/inwardEwb';
+import InwardInv from './components/Charts/inwardInv';
+import UNMatchedDataPage from './components/Charts/unMatchedData';
 import PageTitle from './components/PageTitle';
+import MatchedReportPage from './components/Reports/MatchedReport';
 import DefaultLayout from './layout/DefaultLayout';
 import LinkExpired from './pages/Authentication/LinkExpired';
 import OtpVerify from './pages/Authentication/OtpVerify';
@@ -12,7 +18,6 @@ import SignUp from './pages/Authentication/SignUp';
 import ForgotPassword from './pages/Authentication/forgotPassword';
 import ResetPassword from './pages/Authentication/resetPassword';
 import Calendar from './pages/Calendar';
-import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
@@ -21,32 +26,28 @@ import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
-import InwardEwb from './components/Charts/inwardEwb';
-import InwardInv from './components/Charts/inwardInv';
-import MatchedDataPage from './components/Charts/MatchedData';
-import UNMatchedDataPage from './components/Charts/unMatchedData';
 
 function App() {
   const [loading, setLoading] = useState<boolean>();
   const { pathname } = useLocation();
-  const [token, setToken] = useState<boolean>(true)
+  const [token, setToken] = useState<any>(localStorage.getItem("token")||"")
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [pathname]);
 
-  useEffect(() => {
+  // useEffect(() => {
    
-    setTimeout(() => setLoading(false), 1000);
-   let data=localStorage.getItem("token")
-   if(data){
-    setToken(false)}
+  //   setTimeout(() => setLoading(false), 1000);
+  //  let data=localStorage.getItem("token")
+  //  if(data){
+  //   setToken(false)}
    
-  }, []);
+  // }, []);
 
   return loading ? (
     <Loader />
-  ) : (token?
+  ) : (token==""?
    
     <Routes>
         <Route
@@ -180,11 +181,29 @@ function App() {
           }
         />
           <Route
+          path="/InwardInv/matched-data"
+          element={
+            <>
+              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <InvMatchedDataPage />
+            </>
+          }
+        />
+           <Route
           path="/InwardEWB/matched-data"
           element={
             <>
               <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <MatchedDataPage />
+            </>
+          }
+        />
+          <Route
+          path="/report/exact-match"
+          element={
+            <>
+              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <MatchedReportPage />
             </>
           }
         />
@@ -197,7 +216,17 @@ function App() {
             </>
           }
         />
+          <Route
+          path="/InwardInv/unmatched-data"
+          element={
+            <>
+              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <InvUNMatchedDataPage />
+            </>
+          }
+        />
         <Route
+        
           path="/InwardINV"
           element={
             <>

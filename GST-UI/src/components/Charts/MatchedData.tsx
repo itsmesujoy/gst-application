@@ -9,49 +9,6 @@ interface ChartThreeState {
   series: { name: string; data: number[] }[];
 }
 
-const options: ApexOptions = {
-  chart: {
-    fontFamily: 'Satoshi, sans-serif',
-    type: 'bar',
-  },
-  colors: ['#FF6F61', '#6B5B95'],
-  xaxis: {
-    categories: ['Exact Match / Acceptable differences', 'Mismatch Data'],
-  },
-  plotOptions: {
-    bar: {
-      horizontal: true, // Set this to true for horizontal bars
-      endingShape: 'rounded',
-      columnWidth: '50%',
-    },
-  },
-  legend: {
-    show: false,
-    position: 'bottom',
-  },
-  dataLabels: {
-    enabled: true,
-  },
-  responsive: [
-    {
-      breakpoint: 2600,
-      options: {
-        chart: {
-          width: 900,
-        },
-      },
-    },
-    {
-      breakpoint: 640,
-      options: {
-        chart: {
-          width: 200,
-        },
-      },
-    },
-  ],
-};
-
 const MatchedDataPage: React.FC = () => {
   const [state, setState] = useState<ChartThreeState>({
     series: [{ name: 'Value', data: [34920, 950] }], // Initial value-wise data
@@ -70,12 +27,67 @@ const MatchedDataPage: React.FC = () => {
     const value = e.target.value;
     setViewType(value);
     if (value === 'value') {
-      // Value wise series
+      // Count series
       setState({ series: [{ name: 'Value', data: [34920, 950] }] });
     } else {
-      // Count wise series
+      // Amount series
       setState({ series: [{ name: 'Count', data: [602510100, 18609950] }] });
     }
+  };
+
+  const handleDataPointSelection = (event: any, chartContext: any, { dataPointIndex }: any) => {
+    console.log(dataPointIndex);
+    if (dataPointIndex === 0) {
+      navigate(`/report/exact-match`);
+    } else if (dataPointIndex === 1) {
+      navigate(`/report/mismatch-data`);
+    }
+  };
+
+  const options: ApexOptions = {
+    chart: {
+      fontFamily: 'Satoshi, sans-serif',
+      type: 'bar',
+      events: {
+        dataPointSelection: handleDataPointSelection,
+      },
+    },
+    colors: ['#FF6F61', '#6B5B95'],
+    xaxis: {
+      categories: ['Exact Match / Acceptable differences', 'Mismatch Data'],
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true, // Set this to true for horizontal bars
+        endingShape: 'rounded',
+        columnWidth: '50%',
+      },
+    },
+    legend: {
+      show: false,
+      position: 'bottom',
+    },
+    dataLabels: {
+      enabled: true,
+    },
+    responsive: [
+      {
+        breakpoint: 2600,
+        options: {
+          chart: {
+            width: 900,
+          },
+        },
+      },
+      {
+        breakpoint: 640,
+        options: {
+          chart: {
+            width: 200,
+          },
+        },
+      },
+    ],
   };
 
   return (
@@ -127,8 +139,8 @@ const MatchedDataPage: React.FC = () => {
           value={viewType}
           onChange={handleViewChange}
         >
-          <option value="value">Value Wise</option>
-          <option value="count">Count Wise</option>
+          <option value="value">Count</option>
+          <option value="count">Amount</option>
         </select>
       </div>
 
@@ -137,8 +149,6 @@ const MatchedDataPage: React.FC = () => {
           <ReactApexChart options={options} series={state.series} type="bar" height={400} />
         </div>
       </div>
-
- 
     </div>
   );
 };

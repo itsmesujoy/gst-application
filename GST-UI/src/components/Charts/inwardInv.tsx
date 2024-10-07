@@ -143,8 +143,8 @@ const InwardInv: React.FC = () => {
           value={viewType}
           onChange={handleViewChange}
         >
-          <option value="value">Value Wise</option>
-          <option value="count">Count Wise</option>
+          <option value="value">Count</option>
+          <option value="count">Amount</option>
         </select>
       </div>
 
