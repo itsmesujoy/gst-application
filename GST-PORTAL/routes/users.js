@@ -92,7 +92,7 @@ const db=req.db
           <p>This code is valid for 8 minutes. Please use it to complete your login process.</p>
           <p>If you did not request this code, please ignore this email.</p>
           <p>Thank you,</p>
-          <p>GST Req Admin</p>
+          <p>GST Repo Admin</p>
           <hr style="border-top: 1px solid #ddd; margin-top: 20px;"/>
           <p style="font-size: 12px; color: #999;">
             This is an automated message, please do not reply.
@@ -163,7 +163,7 @@ router.post('/resend-otp',async (req, res) => {
         <p>This code is valid for 8 minutes. Please use it to complete your login process.</p>
         <p>If you did not request this code, please ignore this email.</p>
         <p>Thank you,</p>
-        <p>GST Req Admin</p>
+        <p>GST Repo Admin</p>
         <hr style="border-top: 1px solid #ddd; margin-top: 20px;"/>
         <p style="font-size: 12px; color: #999;">
           This is an automated message, please do not reply.
